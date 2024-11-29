@@ -97,7 +97,9 @@
 
                     // Convenience function to setup a webcam
                     const flip = true; // whether to flip the webcam
-                    webcam = new tmImage.Webcam(500, 500, flip); // width, height, flip
+                    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                    if (isMobile) webcam = new tmImage.Webcam(200, 200, flip);
+                    else webcam = new tmImage.Webcam(500, 500, flip); // width, height, flip
                     await webcam.setup(); // request access to the webcam
                     await webcam.play();
                     window.requestAnimationFrame(loop);
@@ -121,12 +123,18 @@
                     // predict can take in an image, video or canvas html element
                     const prediction = await model.predict(webcam.canvas);
                     let highestPrediction = { className: "", probability: 0 };
-                    for (let i = 0; i < maxPredictions; i++) {
-                        if (prediction[i].probability > highestPrediction.probability) {
+                    
+                    let is_exist = false;
+                    for (let i = 0; i < maxPredictions-1; i++) {
+                        if (prediction[i].probability.toFixed(2) == 1.00) {
                             highestPrediction = prediction[i];
+                            is_exist = true;
+                            break;
                         }
                     }
-                    labelContainer.innerHTML = highestPrediction.className + ": " + highestPrediction.probability.toFixed(2);
+
+                    if (is_exist) labelContainer.innerHTML = highestPrediction.className + ": " + highestPrediction.probability.toFixed(2);
+                    else labelContainer.innerHTML = "검색 결과가 없습니다.";
                 }
             </script>
         </div>

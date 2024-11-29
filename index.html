@@ -70,8 +70,8 @@
                 <div class="divider-custom-line"></div>
             </div>
             <button type="button" onclick="init()">Start</button>
-            <div id="webcam-container"></div>
-            <div id="label-container"></div>
+            <div id="webcam-container" class="mx-auto text-center"></div>
+            <div id="label-container" class="mx-auto text-center"></div>
             <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
             <script type="text/javascript">
@@ -97,7 +97,7 @@
 
                     // Convenience function to setup a webcam
                     const flip = true; // whether to flip the webcam
-                    webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+                    webcam = new tmImage.Webcam(500, 500, flip); // width, height, flip
                     await webcam.setup(); // request access to the webcam
                     await webcam.play();
                     window.requestAnimationFrame(loop);
@@ -132,11 +132,11 @@
         </div>
     </section>
 
-    <!-- 문화유산 설명 -->
-    <section class="page-section bg-primary text-white mb-0" id="heritage-info">
+    <!-- 문화유산 정보 -->
+    <section class="page-section bg-primary text-white mb-0" id="about">
         <div class="container">
             <!-- Heritage Info Section Heading-->
-            <h2 class="page-section-heading text-center text-uppercase text-white">문화유산 설명</h2>
+            <h2 class="page-section-heading text-center text-uppercase text-white" id="about-name">문화유산 정보</h2>
             <!-- Icon Divider-->
             <div class="divider-custom divider-light">
                 <div class="divider-custom-line"></div>
@@ -193,7 +193,7 @@
                     highestPrediction = prediction[i];
                 }
             }
-            labelContainer.innerHTML = highestPrediction.className + ": " + highestPrediction.probability.toFixed(2);
+            document.getElementById("about-name").innerHTML = highestPrediction.className;
             document.getElementById("heritage-description").innerHTML = heritageDescriptions[highestPrediction.className] || "설명을 찾을 수 없습니다.";
         }
     </script>
